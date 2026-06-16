@@ -5,20 +5,13 @@ const gameScreen = document.getElementById("gameScreen");
 const canvas = document.getElementById("mazeCanvas");
 const ctx = canvas.getContext("2d");
 
+let currentLevel = 0;
 let level = 1;
 let coins = 0;
 
-let maze = [
-    [0,0,0,1,0],
-    [1,1,0,1,0],
-    [0,0,0,0,0],
-    [0,1,1,1,0],
-    [0,0,0,1,0]
-];
-
-let player = {x:0, y:0};
-let goal = {x:4, y:4};
-
+let maze = levels[currentLevel].maze;
+let player = {...levels[currentLevel].start};
+let goal = levels[currentLevel].goal;
 const cellSize = 80;
 
 playBtn.onclick = () => {
