@@ -1,145 +1,171 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* =====================
+   GLOBAL RESET
+===================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    overflow:hidden;
-    font-family:Arial,sans-serif;
-    background:black;
-    color:white;
+body {
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: black;
+    color: white;
 }
 
-canvas{
-    display:block;
+/* Canvas */
+canvas {
+    display: block;
 }
 
-/* Home Screen */
-#homeScreen{
-    position:absolute;
-    width:100%;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background:black;
-    z-index:10;
+/* =====================
+   GAME CONTAINER
+===================== */
+#gameContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-#homeScreen h1{
-    font-size:50px;
-    margin-bottom:20px;
+/* =====================
+   INSTRUCTIONS
+===================== */
+#instructions {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    z-index: 10;
+    background: rgba(0,0,0,0.5);
+    padding: 8px 12px;
+    border-radius: 8px;
 }
 
-#playBtn{
-    padding:15px 40px;
-    font-size:20px;
-    cursor:pointer;
-    border:none;
+/* =====================
+   SCREENS (COMMON)
+===================== */
+#homeScreen,
+#loadingScreen,
+#gameOverScreen,
+#winScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    text-align: center;
 }
 
-/* HUD */
-#hud{
-    position:absolute;
-    top:20px;
-    left:20px;
-    z-index:5;
-    font-size:22px;
+/* Hide class */
+.hidden {
+    display: none !important;
 }
 
-#hud div{
-    margin-bottom:10px;
+/* Titles */
+#homeScreen h1,
+#gameOverScreen h1,
+#winScreen h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
 }
 
-/* Health bar */
-#healthContainer{
-    width:200px;
-    height:20px;
-    border:2px solid white;
+/* Game Over red */
+#gameOverScreen h1 {
+    color: red;
 }
 
-#healthBar{
-    width:100%;
-    height:100%;
-    background:red;
+/* Win green */
+#winScreen h1 {
+    color: lime;
 }
 
-/* Pause Button */
-#pauseBtn{
-    position:absolute;
-    top:20px;
-    right:20px;
-    padding:10px 20px;
-    z-index:5;
-    cursor:pointer;
+/* =====================
+   BUTTONS
+===================== */
+button {
+    margin: 10px;
+    padding: 12px 24px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background: #444;
+    color: white;
+    transition: 0.2s;
 }
 
-/* Loading Screen */
-#loadingScreen{
-    position:absolute;
-    width:100%;
-    height:100vh;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:30px;
-    z-index:20;
+button:hover {
+    background: #666;
 }
 
-/* Game Over Screen */
-#gameOverScreen{
-    position:absolute;
-    width:100%;
-    height:100vh;
-    background:rgba(0,0,0,0.9);
-    display:none;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:30;
+/* Play button special */
+#playBtn {
+    padding: 15px 40px;
+    font-size: 20px;
 }
 
-#gameOverScreen h1{
-    font-size:60px;
-    color:red;
+/* =====================
+   HUD
+===================== */
+#hud {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 15px;
+    z-index: 10;
 }
 
-/* Win Screen */
-#winScreen{
-    position:absolute;
-    width:100%;
-    height:100vh;
-    background:rgba(0,0,0,0.9);
-    display:none;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:30;
+#hud div {
+    background: rgba(0,0,0,0.5);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 18px;
 }
 
-#winScreen h1{
-    font-size:60px;
-    color:lime;
+/* =====================
+   HEALTH BAR
+===================== */
+#healthBarContainer {
+    width: 150px;
+    height: 20px;
+    background: #555;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-/* Buttons */
-button{
-    margin:10px;
-    padding:15px 30px;
-    font-size:18px;
-    cursor:pointer;
+#healthBar {
+    width: 100%;
+    height: 100%;
+    background: red;
 }
 
-/* Instructions */
-#instructions{
-    position:absolute;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:18px;
-    z-index:5;
-    text-align:center;
+/* =====================
+   PAUSE BUTTON
+===================== */
+#pauseBtn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px 18px;
+    z-index: 10;
+    background: #333;
+    border-radius: 6px;
+}
+
+/* =====================
+   LOADING SCREEN TEXT
+===================== */
+#loadingScreen {
+    font-size: 28px;
 }
