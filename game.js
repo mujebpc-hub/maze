@@ -15,6 +15,17 @@ let level = 1;
 let coins = 0;
 
 let maze = levels[currentLevel].maze;
+
+const keys = {};
+
+document.addEventListener("keydown", (e) => {
+    keys[e.key.toLowerCase()] = true;
+});
+
+document.addEventListener("keyup", (e) => {
+    keys[e.key.toLowerCase()] = false;
+});
+
 let player = {...levels[currentLevel].start};
 let goal = levels[currentLevel].goal;
 const cellSize = 80;
