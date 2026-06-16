@@ -4,6 +4,7 @@ const gameScreen = document.getElementById("gameScreen");
 
 const canvas = document.getElementById("mazeCanvas");
 const ctx = canvas.getContext("2d");
+
 document.addEventListener("mousemove", (e) => {
     player.rotation = player.rotation || 0;
     player.rotation += e.movementX * 0.01;
