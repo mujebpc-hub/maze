@@ -74,15 +74,23 @@ function movePlayer(direction){
     }
 
     if(player.x === goal.x && player.y === goal.y){
-        coins += 10;
+    coins += 10;
+    currentLevel++;
+
+    if(currentLevel < levels.length){
         level++;
 
-        alert("Level Complete! +10 Coins");
+        maze = levels[currentLevel].maze;
+        player = {...levels[currentLevel].start};
+        goal = levels[currentLevel].goal;
 
-        player = {x:0, y:0};
-
-        updateUI();
+        alert("Next Level Unlocked!");
+    } else {
+        alert("Game Completed!");
     }
+
+    updateUI();
+}
 
     drawMaze();
 }
