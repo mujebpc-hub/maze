@@ -1,41 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maze Coin Game</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Maze of the Watcher</title>
+<link rel="stylesheet" href="style.css" />
+<!-- Three.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.min.js"></script>
+<!-- GLTFLoader CDN -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.179.1/examples/js/loaders/GLTFLoader.js"></script>
+<!-- PointerLockControls CDN -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.179.1/examples/js/controls/PointerLockControls.js"></script>
+<!-- Levels Data -->
+<script src="levels.js"></script>
+<!-- Main Game Script -->
+<script src="game.js" defer></script>
+<style>
+  /* Basic reset and styles for layout and screens */
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+  /* Hidden class */
+  .hidden { display: none; }
+
+  /* Fullscreen canvas container */
+  #gameContainer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+  canvas { display: block; width: 100%; height: 100%; }
+
+  /* Overlay instructions */
+  #instructions {
+    position: fixed;
+    top: 10px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.5);
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    z-index: 10;
+    text-align: center;
+  }
+
+  /* UI screens styling */
+  #homeScreen, #gameOverScreen, #winScreen, #loadingScreen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+  }
+  #homeScreen h1 { font-size: 3em; margin-bottom: 20px; color: #fff; }
+  #homeScreen p { font-size: 1.2em; color: #fff; margin: 10px 0; }
+  #homeScreen button, #gameOverScreen button, #winScreen button {
+    padding: 12px 24px;
+    font-size: 1em;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background: #444;
+    color: #fff;
+    transition: background 0.3s;
+  }
+  #homeScreen button:hover, #gameOverScreen button:hover, #winScreen button:hover {
+    background: #666;
+  }
+  /* HUD overlays inside game screen */
+  #hud {
+    position: absolute;
+    top: 10px; left: 10px;
+    display: flex;
+    gap: 20px;
+    z-index: 5;
+  }
+  #hud div {
+    background: rgba(0,0,0,0.5);
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+  }
+  #healthBarContainer {
+    width: 150px;
+    height: 20px;
+    background: #555;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  #healthBar {
+    height: 100%;
+    width: 100%;
+    background: red;
+  }
+</style>
 </head>
 <body>
 
+<!-- Main Game Container with WebGL Canvas -->
+<div id="gameContainer"></div>
+
+<!-- Overlay Instructions -->
+<div id="instructions">
+  <div>WASD to move | Mouse to look | ESC to unlock</div>
+</div>
+
+<!-- UI Screens -->
+<!-- Home Screen -->
 <div id="homeScreen">
-    <h1>Maze Coin Game</h1>
-    <p>Level: <span id="levelDisplay">1</span></p>
-    <p>Coins: <span id="coinDisplay">0</span></p>
-    <button id="playBtn">Play</button>
+  <h1>Maze of the Watcher</h1>
+  <p>Level: <span id="levelDisplay">1</span></p>
+  <p>Coins: <span id="coinDisplay">0</span></p>
+  <button id="playBtn">Play</button>
 </div>
 
-<div id="gameScreen" class="hidden">
-    <div id="topBar">
-        <span>Level: <span id="gameLevel">1</span></span>
-        <span>Coins: <span id="gameCoins">0</span></span>
-    </div>
-
-    <canvas id="mazeCanvas" width="400" height="400"></canvas>
-
-    <div id="controls">
-        <button onclick="movePlayer('up')">↑</button>
-        <div>
-            <button onclick="movePlayer('left')">←</button>
-            <button onclick="movePlayer('down')">↓</button>
-            <button onclick="movePlayer('right')">→</button>
-        </div>
-    </div>
+<!-- Loading Screen -->
+<div id="loadingScreen" class="hidden">
+  <h2>Loading...</h2>
+  <progress id="progressBar" max="100" value="0" style="width:80%; height:20px;"></progress>
 </div>
 
+<!-- Game Screen: HUD & Canvas -->
+<div id="gameScreen" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%;">
+
+  <!-- 3D Viewport -->
+  <div id="gameContainer"></div>
+
+  <!-- HUD elements -->
+  <div id="hud">
+    <div>Level: <span id="gameLevel">1</span></div>
+    <div>Coins: <span id="gameCoins">0</span></div>
+    <div id="healthBarContainer"><div id="healthBar"></div></div>
+    <button id="pauseBtn">Pause</button>
+  </div>
+</div>
+
+<!-- Game Over Screen -->
+<div id="gameOverScreen" class="hidden">
+  <h1>Game Over</h1>
+  <button id="restartBtn">Restart</button>
+  <button id="homeBtn">Home</button>
+</div>
+
+<!-- Win Screen -->
+<div id="winScreen" class="hidden">
+  <h1>You Escaped!</h1>
+  <button id="nextLevelBtn">Next Level</button>
+  <button id="homeBtn2">Home</button>
+</div>
+
+<!-- Audio Elements -->
+<audio id="bgMusic" loop src="audio/background.mp3"></audio>
+<audio id="chaseSound" src="audio/chase.mp3"></audio>
+<audio id="attackSound" src="audio/attack.mp3"></audio>
+<audio id="winSound" src="audio/win.mp3"></audio>
+
+<!-- Scripts loaded in order -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.179.1/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.179.1/examples/js/controls/PointerLockControls.js"></script>
 <script src="levels.js"></script>
-<script src="game.js"></script>
+<script src="game.js" defer></script>
+
 </body>
 </html>
