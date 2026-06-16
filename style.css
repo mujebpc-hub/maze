@@ -1,41 +1,145 @@
-body{
+*{
     margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
     font-family:Arial,sans-serif;
-    background:#222;
+    background:black;
     color:white;
-    text-align:center;
 }
 
-.hidden{
-    display:none;
+canvas{
+    display:block;
 }
 
+/* Home Screen */
 #homeScreen{
-    margin-top:100px;
+    position:absolute;
+    width:100%;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:black;
+    z-index:10;
 }
 
-button{
-    padding:15px 25px;
+#homeScreen h1{
+    font-size:50px;
+    margin-bottom:20px;
+}
+
+#playBtn{
+    padding:15px 40px;
     font-size:20px;
-    margin:10px;
     cursor:pointer;
     border:none;
-    border-radius:10px;
 }
 
-#mazeCanvas{
-    background:white;
-    margin-top:20px;
-    border:4px solid black;
-}
-
-#topBar{
-    margin-top:20px;
+/* HUD */
+#hud{
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:5;
     font-size:22px;
-    display:flex;
-    justify-content:space-around;
 }
 
-#controls{
-    margin-top:20px;
+#hud div{
+    margin-bottom:10px;
+}
+
+/* Health bar */
+#healthContainer{
+    width:200px;
+    height:20px;
+    border:2px solid white;
+}
+
+#healthBar{
+    width:100%;
+    height:100%;
+    background:red;
+}
+
+/* Pause Button */
+#pauseBtn{
+    position:absolute;
+    top:20px;
+    right:20px;
+    padding:10px 20px;
+    z-index:5;
+    cursor:pointer;
+}
+
+/* Loading Screen */
+#loadingScreen{
+    position:absolute;
+    width:100%;
+    height:100vh;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+    z-index:20;
+}
+
+/* Game Over Screen */
+#gameOverScreen{
+    position:absolute;
+    width:100%;
+    height:100vh;
+    background:rgba(0,0,0,0.9);
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:30;
+}
+
+#gameOverScreen h1{
+    font-size:60px;
+    color:red;
+}
+
+/* Win Screen */
+#winScreen{
+    position:absolute;
+    width:100%;
+    height:100vh;
+    background:rgba(0,0,0,0.9);
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:30;
+}
+
+#winScreen h1{
+    font-size:60px;
+    color:lime;
+}
+
+/* Buttons */
+button{
+    margin:10px;
+    padding:15px 30px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+/* Instructions */
+#instructions{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:18px;
+    z-index:5;
+    text-align:center;
 }
