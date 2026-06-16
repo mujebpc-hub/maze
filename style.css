@@ -1,1 +1,41 @@
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#222;
+    color:white;
+    text-align:center;
+}
 
+.hidden{
+    display:none;
+}
+
+#homeScreen{
+    margin-top:100px;
+}
+
+button{
+    padding:15px 25px;
+    font-size:20px;
+    margin:10px;
+    cursor:pointer;
+    border:none;
+    border-radius:10px;
+}
+
+#mazeCanvas{
+    background:white;
+    margin-top:20px;
+    border:4px solid black;
+}
+
+#topBar{
+    margin-top:20px;
+    font-size:22px;
+    display:flex;
+    justify-content:space-around;
+}
+
+#controls{
+    margin-top:20px;
+}
