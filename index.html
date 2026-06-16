@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maze Coin Game</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="homeScreen">
+    <h1>Maze Coin Game</h1>
+    <p>Level: <span id="levelDisplay">1</span></p>
+    <p>Coins: <span id="coinDisplay">0</span></p>
+    <button id="playBtn">Play</button>
+</div>
+
+<div id="gameScreen" class="hidden">
+    <div id="topBar">
+        <span>Level: <span id="gameLevel">1</span></span>
+        <span>Coins: <span id="gameCoins">0</span></span>
+    </div>
+
+    <canvas id="mazeCanvas" width="400" height="400"></canvas>
+
+    <div id="controls">
+        <button onclick="movePlayer('up')">↑</button>
+        <div>
+            <button onclick="movePlayer('left')">←</button>
+            <button onclick="movePlayer('down')">↓</button>
+            <button onclick="movePlayer('right')">→</button>
+        </div>
+    </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
