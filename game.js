@@ -62,22 +62,6 @@ function init() {
     directionalLight.position.set(10, 20, 10);
     scene.add(directionalLight);
 
-    // Load enemy model
-    loadEnemyModel();
-
-    // Controls - Pointer Lock
-    document.addEventListener('click', () => {
-        document.body.requestPointerLock();
-    });
-    document.addEventListener('pointerlockchange', onPointerLockChange);
-
-    // Resize handler
-    window.addEventListener('resize', onWindowResize);
-
-    // Keyboard controls
-    document.addEventListener('keydown', onKeyDown);
-    document.addEventListener('keyup', onKeyUp);
-
     // Initialize level
     loadLevel(currentLevel);
     animate();
