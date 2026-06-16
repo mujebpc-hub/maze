@@ -4,7 +4,6 @@
 let currentLevel = parseInt(localStorage.getItem('currentLevel')) || 0;
 let coins = parseInt(localStorage.getItem('coins')) || 0;
 
-let levels = []; // Ensure levels.js provides this array with maze data
 let maze = [];
 let level = currentLevel + 1;
 
