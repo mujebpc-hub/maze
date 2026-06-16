@@ -5,11 +5,6 @@ const gameScreen = document.getElementById("gameScreen");
 const canvas = document.getElementById("mazeCanvas");
 const ctx = canvas.getContext("2d");
 
-document.addEventListener("mousemove", (e) => {
-    player.rotation = player.rotation || 0;
-    player.rotation += e.movementX * 0.01;
-});
-
 let currentLevel = 0;
 let level = 1;
 let coins = 0;
@@ -20,6 +15,11 @@ const keys = {};
 
 document.addEventListener("keydown", (e) => {
     keys[e.key.toLowerCase()] = true;
+
+    if(e.key.toLowerCase() === "w") movePlayer("up");
+    if(e.key.toLowerCase() === "s") movePlayer("down");
+    if(e.key.toLowerCase() === "a") movePlayer("left");
+    if(e.key.toLowerCase() === "d") movePlayer("right");
 });
 
 document.addEventListener("keyup", (e) => {
@@ -28,6 +28,10 @@ document.addEventListener("keyup", (e) => {
 
 let player = {...levels[currentLevel].start};
 let goal = levels[currentLevel].goal;
+
+// Enemy spawn
+let enemy = {x:4, y:0};
+
 const cellSize = 80;
 
 playBtn.onclick = () => {
@@ -43,28 +47,52 @@ function drawMaze(){
         for(let x=0; x<maze[y].length; x++){
             if(maze[y][x] === 1){
                 ctx.fillStyle = "black";
-                ctx.fillRect(x*cellSize,y*cellSize,cellSize,cellSize);
-            }else{
-                ctx.strokeRect(x*cellSize,y*cellSize,cellSize,cellSize);
+                ctx.fillRect(
+                    x * cellSize,
+                    y * cellSize,
+                    cellSize,
+                    cellSize
+                );
+            } else {
+                ctx.strokeRect(
+                    x * cellSize,
+                    y * cellSize,
+                    cellSize,
+                    cellSize
+                );
             }
         }
     }
 
     // Goal
     ctx.fillStyle = "green";
-    ctx.fillRect(goal.x*cellSize+20, goal.y*cellSize+20, 40, 40);
+    ctx.fillRect(
+        goal.x * cellSize + 20,
+        goal.y * cellSize + 20,
+        40,
+        40
+    );
 
     // Player
     ctx.fillStyle = "red";
     ctx.beginPath();
     ctx.arc(
-        player.x*cellSize+40,
-        player.y*cellSize+40,
+        player.x * cellSize + 40,
+        player.y * cellSize + 40,
         20,
         0,
-        Math.PI*2
+        Math.PI * 2
     );
     ctx.fill();
+
+    // Enemy
+    ctx.fillStyle = "purple";
+    ctx.fillRect(
+        enemy.x * cellSize + 20,
+        enemy.y * cellSize + 20,
+        40,
+        40
+    );
 
     updateUI();
 }
@@ -78,6 +106,7 @@ function movePlayer(direction){
     if(direction === "left") newX--;
     if(direction === "right") newX++;
 
+    // Player movement
     if(
         newX >= 0 &&
         newY >= 0 &&
@@ -89,24 +118,41 @@ function movePlayer(direction){
         player.y = newY;
     }
 
-    if(player.x === goal.x && player.y === goal.y){
-    coins += 10;
-    currentLevel++;
+    // Enemy chase player
+    if(enemy.x < player.x) enemy.x++;
+    else if(enemy.x > player.x) enemy.x--;
 
-    if(currentLevel < levels.length){
-        level++;
+    if(enemy.y < player.y) enemy.y++;
+    else if(enemy.y > player.y) enemy.y--;
 
-        maze = levels[currentLevel].maze;
-        player = {...levels[currentLevel].start};
-        goal = levels[currentLevel].goal;
-
-        alert("Next Level Unlocked!");
-    } else {
-        alert("Game Completed!");
+    // Enemy attack
+    if(enemy.x === player.x && enemy.y === player.y){
+        alert("Enemy attacked you!");
+        location.reload();
     }
 
-    updateUI();
-}
+    // Level complete
+    if(player.x === goal.x && player.y === goal.y){
+        coins += 10;
+        currentLevel++;
+
+        if(currentLevel < levels.length){
+            level++;
+
+            maze = levels[currentLevel].maze;
+            player = {...levels[currentLevel].start};
+            goal = levels[currentLevel].goal;
+
+            // Reset enemy
+            enemy = {x:4, y:0};
+
+            alert("Next Level Unlocked!");
+        } else {
+            alert("Game Completed!");
+        }
+
+        updateUI();
+    }
 
     drawMaze();
 }
